@@ -1,0 +1,62 @@
+/* 基礎設定 */
+body {
+    margin: 0;
+    font-family: "Microsoft JhengHei", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff5f5;
+    overflow: hidden;
+}
+
+/* 按鈕樣式 */
+.btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    margin: 10px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    background-color: #ff8fa3;
+    color: white;
+    transition: 0.3s;
+}
+
+.btn:hover { background-color: #ff4d6d; }
+
+/* 主畫面卡片 */
+.main-menu { display: flex; gap: 20px; }
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.card:hover { transform: translateY(-10px); }
+
+/* 信封動畫簡單版 */
+.envelope {
+    width: 300px;
+    height: 200px;
+    background: #ffb3c1;
+    position: relative;
+    cursor: pointer;
+}
+.paper {
+    position: absolute;
+    top: 10px; left: 10px;
+    width: 280px; height: 180px;
+    background: white;
+    padding: 20px;
+    transition: 1s ease-in-out;
+    z-index: -1;
+}
+.paper.reveal {
+    transform: translateY(-150px);
+    height: 350px;
+    z-index: 10;
+}

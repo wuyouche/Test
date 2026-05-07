@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的專屬影片</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .video-container {
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+        }
+        video {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background-color: #000;
+        }
+        .back-btn {
+            margin-top: 20px;
+            display: inline-block;
+            text-decoration: none;
+            color: #ff4d6d;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <h2 id="video-title">這是我為您準備的影片</h2>
+        
+        <video controls poster="video-cover.jpg">
+            <source src="my-video.mp4" type="video/mp4">
+            您的瀏覽器不支援播放此影片，請更新瀏覽器。
+        </video>
+
+        <br>
+        <a href="main.html" class="back-btn">← 返回主畫面</a>
+    </div>
+
+    <script>
+        const role = localStorage.getItem('userRole');
+        const title = document.getElementById('video-title');
+        if (role === 'mom') {
+            title.innerText = "給媽媽的專屬回憶錄 🎬";
+        } else {
+            title.innerText = "給外婆的專屬回憶錄 🎬";
+        }
+    </script>
+</body>
+</html>

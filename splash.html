@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專屬驚喜製作中...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== 基礎背景 (延續主視覺) ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Noto Sans TC', sans-serif;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 40%),
+                radial-gradient(circle at 80% 30%, rgba(255,182,193,.35), transparent 45%),
+                linear-gradient(135deg, #ffe4ec, #fff7fa, #e6f3ff);
+        }
+
+        /* ===== 飄落動畫 ===== */
+        .falling-item {
+            position: fixed;
+            top: -60px;
+            z-index: 1;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* ===== 進度條容器 ===== */
+        .loader-wrapper {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: #d96c87;
+            margin-bottom: 20px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.8);
+        }
+
+        /* 外層進度條軌道 */
+        .progress-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* 實際跑動的進度條 */
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ffb6c1, #ff4d6d);
+            border-radius: 20px;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+        }
+
+        .percentage {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body id="splash-body">
+
+    <div class="loader-wrapper">
+        <div class="loading-text" id="status-text">正在為您準備驚喜...</div>
+        <div class="progress-bar-bg">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        <div class="percentage" id="percent-num">0%</div>
+    </div>
+
+    <script>
+        const role = localStorage.getItem('userRole');
+        const container = document.getElementById('splash-body');
+        const statusText = document.getElementById('status-text');
+        const progressFill = document.getElementById('progress');
+        const percentNum = document.getElementById('percent-num');
+
+        // 1. 根據身份調整文字
+        if (role === 'mom') {
+            statusText.innerText = "正在收集給媽媽的愛心...";
+        } else {
+            statusText.innerText = "正在為外婆準備滿滿的心意...";
+        }
+
+        // 2. 產生飄落效果
+        function createFallingEffect(type) {
+            const count = 35;
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'falling-item';
+                    item.style.left = Math.random() * 100 + 'vw';
+                    item.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    item.style.opacity = Math.random() * 0.7 + 0.3;
+                    
+                    if (type === 'kuromi') {
+                        // 媽媽：庫洛米
+                        item.innerHTML = '<img src="kuromi.png" width="45" style="filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1))">'; 
+                    } else {
+                        // 外婆：粉紅愛心 (取代玫瑰)
+                        item.innerText = '💗'; 
+                        item.style.fontSize = (Math.random() * 1 + 1.5) + 'rem';
+                    }
+                    container.appendChild(item);
+                }, i * 150);
+            }
+        }
+
+        if (role === 'mom') {
+            createFallingEffect('kuromi');
+        } else {
+            createFallingEffect('heart'); // 這裡傳入 heart 觸發愛心效果
+        }
+
+        // 3. 進度條邏輯
+        let width = 0;
+        const duration = 3500; 
+        const intervalTime = 35; 
+        const step = 100 / (duration / intervalTime);
+
+        const timer = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(timer);
+                setTimeout(() => {
+                    window.location.href = 'main.html';
+                }, 500);
+            } else {
+                width += step;
+                progressFill.style.width = Math.min(width, 100) + '%';
+                percentNum.innerText = Math.floor(Math.min(width, 100)) + '%';
+            }
+        }, intervalTime);
+
+    </script>
+</body>
+</html>
