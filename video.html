@@ -1,52 +1,133 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的專屬影片</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .video-container {
-            text-align: center;
-            width: 90%;
-            max-width: 800px;
-        }
-        video {
-            width: 100%;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            background-color: #000;
-        }
-        .back-btn {
-            margin-top: 20px;
-            display: inline-block;
-            text-decoration: none;
-            color: #ff4d6d;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <div class="video-container">
-        <h2 id="video-title">這是我為您準備的影片</h2>
-        
-        <video controls poster="video-cover.jpg">
-            <source src="my-video.mp4" type="video/mp4">
-            您的瀏覽器不支援播放此影片，請更新瀏覽器。
-        </video>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>專屬影片播放器</title>
 
-        <br>
-        <a href="main.html" class="back-btn">← 返回主畫面</a>
+<style>
+    body {
+        margin: 0;
+        background: #0f0f0f;
+        font-family: "Noto Sans TC", sans-serif;
+        color: white;
+        display: flex;
+        justify-content: center;
+    }
+
+    .page {
+        width: 100%;
+        max-width: 1000px;
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    /* 影片容器 */
+    .video-box {
+        width: 100%;
+        background: black;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    video {
+        width: 100%;
+        display: block;
+    }
+
+    /* 控制按鈕區 */
+    .actions {
+        margin-top: 12px;
+        display: flex;
+        gap: 10px;
+    }
+
+    button {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #ff4d6d;
+        color: white;
+        font-weight: bold;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+    /* YouTube感副標 */
+    .subtitle {
+        margin-top: 6px;
+        color: #aaa;
+        font-size: 14px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- 標題 -->
+    <div class="title" id="title">🎬 專屬影片</div>
+
+    <!-- 影片 -->
+    <div class="video-box">
+        <video id="video" controls>
+            <source src="mother.mp4" type="video/mp4">
+            您的瀏覽器不支援影片播放
+        </video>
     </div>
 
-    <script>
-        const role = localStorage.getItem('userRole');
-        const title = document.getElementById('video-title');
-        if (role === 'mom') {
-            title.innerText = "給媽媽的專屬回憶錄 🎬";
-        } else {
-            title.innerText = "給外婆的專屬回憶錄 🎬";
-        }
-    </script>
+    <!-- 副標 -->
+    <div class="subtitle">像 YouTube 一樣的影片播放器（可控制 / 可全螢幕）</div>
+
+    <!-- 按鈕 -->
+    <div class="actions">
+        <button onclick="fullscreen()">全螢幕</button>
+        <button onclick="toggleMute()">聲音切換</button>
+    </div>
+
+</div>
+
+<script>
+const video = document.getElementById("video");
+
+// 預設靜音（避免 autoplay 限制）
+video.muted = true;
+
+// 全螢幕
+function fullscreen() {
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+    }
+}
+
+// 開關聲音
+function toggleMute() {
+    video.muted = !video.muted;
+    video.play();
+}
+
+// 標題切換
+const role = localStorage.getItem('userRole');
+const title = document.getElementById('title');
+
+if (role === 'mom') {
+    title.innerText = "🎬 給媽媽的專屬回憶影片";
+} else {
+    title.innerText = "🎬 給外婆的專屬回憶影片";
+}
+</script>
+
 </body>
 </html>
